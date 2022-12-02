@@ -11,14 +11,12 @@ dbConnection();
 //cors config
 app.use( cors() );
 
-//routes
-app.get('/', (req, res) => {
-  console.log('retrieve information from server');
-  res.json({
-    ok: true,
-    msg: 'Hola Insulina'
-  })
-});
+//read body
+app.use( express.json() );
+
+//Routes
+app.use('/api/users', require('./routes/users'));
+
 
 app.listen( process.env.PORT, () => {
   console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
