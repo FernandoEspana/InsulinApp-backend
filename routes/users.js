@@ -3,7 +3,12 @@
 */
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { getUsers, createUser } = require('../controllers/users');
+const {
+	getUsers,
+	createUser,
+	updateUser,
+	deleteUser,
+} = require('../controllers/users');
 const { validateFields } = require('../middlewares/field-validator');
 
 router = Router();
@@ -22,4 +27,14 @@ router.post(
 	createUser
 );
 
+router.put(
+	'/:id',
+	[
+		check('name', 'The name is mandatory').not().isEmpty(),
+		check('email', 'Email wrong format').isEmail(),
+		validateFields,
+	],
+	updateUser
+);
+router.delete('/:id', deleteUser);
 module.exports = router;

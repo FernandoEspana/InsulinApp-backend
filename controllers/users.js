@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 const { response } = require('express');
 const { validationResult } = require('express-validator');
 
@@ -24,6 +25,12 @@ const createUser = async (req, res = response) => {
 		}
 
 		var user = new User(req.body);
+
+		//Encriptar contraseña
+		const salt = bcrypt.genSaltSync();
+		user.password = bcrypt.hashSync(password, salt);
+
+		//se guarda el usuario
 		await user.save();
 
 		res.json({
@@ -39,7 +46,73 @@ const createUser = async (req, res = response) => {
 	}
 };
 
+const updateUser = async (req, res = response) => {
+	const uid = req.params.id;
+	try {
+		const userDB = await User.findById(uid);
+		if (!userDB) {
+			return res.status(404).json({
+				ok: false,
+				msg: 'No existe el usuario',
+			});
+		}
+
+		const fields = req.body;
+		//delete quita el campo en question de la request para no ser actualizados
+		delete fields.password;
+		delete fields.google;
+		delete fields.email;
+		console.log('fields to update', fields);
+
+		await User.findByIdAndUpdate(uid, fields);
+		const userUpdated = await User.findById(uid);
+
+		res.json({
+			ok: true,
+			user: userUpdated,
+		});
+
+		//TODO: validar el token generado
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			ok: false,
+			msg: 'Unexpected error',
+		});
+	}
+};
+
+const deleteUser = async (req, res = response) => {
+	const uid = req.params.id;
+
+	try {
+		const userDB = await User.findById(uid);
+		if (!userDB) {
+			return res.status(404).json({
+				ok: false,
+				msg: 'No existe el usuario',
+			});
+		}
+
+		await User.findByIdAndDelete(uid);
+
+		res.status(200).json({
+			ok: true,
+			msg: 'Usuario Borrado',
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			ok: false,
+			msg: 'Unexpected error',
+		});
+	}
+};
+
 module.exports = {
 	getUsers,
 	createUser,
+	updateUser,
+	deleteUser,
 };
+
