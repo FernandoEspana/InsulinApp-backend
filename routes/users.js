@@ -10,17 +10,20 @@ const {
 	deleteUser,
 } = require('../controllers/users');
 const { validateFields } = require('../middlewares/field-validator');
+const { validateJWT } = require('../middlewares/validate-jwt');
 
 router = Router();
 
-router.get('/', getUsers);
+router.get('/', validateJWT, getUsers);
 
 router.post(
 	'/',
+	validateJWT,
 	// Middlewares to validate several required fields
 	[
 		check('name', 'The name is mandatory').not().isEmpty(),
 		check('password', 'The password is mandatory').not().isEmpty(),
+		check('role', 'The user role is mandatory').not().isEmpty(),
 		check('email', 'Email wrong format').isEmail(),
 		validateFields,
 	],
@@ -29,6 +32,7 @@ router.post(
 
 router.put(
 	'/:id',
+	validateJWT,
 	[
 		check('name', 'The name is mandatory').not().isEmpty(),
 		check('email', 'Email wrong format').isEmail(),
