@@ -16,6 +16,8 @@ app.use( express.json() );
 
 //Routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/pets', require('./routes/pets'));
+app.use('/api/insuline-dosis', require('./routes/insuline-dosis'));
 app.use('/api/login', require('./routes/auth'));
 
 
