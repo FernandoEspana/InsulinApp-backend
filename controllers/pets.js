@@ -1,4 +1,5 @@
 const { response } = require('express');
+const Pet = require('../models/pet');
 
 const getPets = (req, res = response) => {
 	res.json({
@@ -7,11 +8,30 @@ const getPets = (req, res = response) => {
 	});
 };
 
-const createPet = (req, res = response) => {
-	res.json({
-		ok: true,
-		msg: 'create pet',
+//create PET controller
+const createPet = async (req, res = response) => {
+	const uid = req.uid;
+
+	const pet = new Pet({
+		user: uid,
+		...req.body,
 	});
+
+  
+
+	try {
+		const petDB = await pet.save();
+
+		res.json({
+			ok: true,
+			pet: petDB,
+		});
+	} catch (error) {
+		res.status(500).json({
+			ok: false,
+			msg: error,
+		});
+	}
 };
 
 const updatePet = (req, res = response) => {

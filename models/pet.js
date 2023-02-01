@@ -3,16 +3,17 @@ const { Schema, model } = require('mongoose');
 const PetSchema = Schema({
 	name: {
 		type: String,
-		require: true,
+		required: true,
 	},
 	birthDay: {
 		type: Date,
-		require: true,
+		required: true,
 	},
 	image: {
 		trype: String,
 	},
 	user: {
+		required: true,
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 	},

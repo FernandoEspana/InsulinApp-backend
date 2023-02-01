@@ -18,6 +18,7 @@ app.use( express.json() );
 app.use('/api/users', require('./routes/users'));
 app.use('/api/pets', require('./routes/pets'));
 app.use('/api/insuline-dosis', require('./routes/insuline-dosis'));
+app.use('/api/glucose-level', require('./routes/glucose-level'));
 app.use('/api/login', require('./routes/auth'));
 
 

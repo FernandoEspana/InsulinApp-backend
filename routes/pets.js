@@ -18,7 +18,16 @@ router = Router();
 
 router.get('/', getPets);
 
-router.post('/', createPet);
+router.post(
+	'/',
+	[
+		validateJWT,
+		check('name', 'The pet name is necesary').not().isEmpty(),
+		check('birthDay', 'Thepet birtDay date is necesary').not().isEmpty(),
+		validateFields,
+	],
+	createPet
+);
 
 router.put('/:id', [], updatePet);
 router.delete('/:id', deletePet);
