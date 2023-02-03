@@ -18,7 +18,18 @@ router = Router();
 
 router.get('/', getInsulineDosis);
 
-router.post('/', createInsulineDosis);
+router.post(
+	'/',
+	[
+		validateJWT,
+		check('units', 'The insuiline units are necesary').not().isEmpty(),
+		check('pet', 'The relation between pet and insuline-dosis is necesary')
+			.not()
+			.isEmpty(),
+		validateFields,
+	],
+	createInsulineDosis
+);
 
 router.put('/:id', updatInsulineDosis);
 router.delete('/:id', deleteInsulineDosis);

@@ -8,7 +8,7 @@ const getPets = (req, res = response) => {
 	});
 };
 
-//create PET controller
+//create PET 
 const createPet = async (req, res = response) => {
 	const uid = req.uid;
 
@@ -17,12 +17,10 @@ const createPet = async (req, res = response) => {
 		...req.body,
 	});
 
-  
-
 	try {
 		const petDB = await pet.save();
 
-		res.json({
+		res.status(200).json({
 			ok: true,
 			pet: petDB,
 		});

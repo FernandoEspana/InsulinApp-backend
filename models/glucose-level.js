@@ -1,22 +1,23 @@
 const { Schema, model } = require('mongoose');
 
-const GlocoseLevelSchema = Schema(
+const GlucoseLevelSchema = Schema(
 	{
 		level: {
 			type: Number,
-			require: true,
+			required: true,
 		},
 		pet: {
 			type: Schema.Types.ObjectId,
 			ref: 'Pet',
+			required: true,
 		},
 	},
 	{ timestamps: true }
 );
 
-GlocoseLevelSchema.method('toJSON', function () {
+GlucoseLevelSchema.method('toJSON', function () {
 	const { __v, ...object } = this.toObject();
 	return object;
 });
 
-module.exports = model('InsulineDosis', GlocoseLevelSchema);
+module.exports = model('GlucoseLevel', GlucoseLevelSchema);

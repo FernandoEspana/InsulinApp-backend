@@ -4,11 +4,12 @@ const InsulineDosisSchema = Schema(
 	{
 		units: {
 			type: Number,
-			require: true,
+			required: true,
 		},
 		pet: {
 			type: Schema.Types.ObjectId,
 			ref: 'Pet',
+			required: true,
 		},
 	},
 	{ timestamps: true }

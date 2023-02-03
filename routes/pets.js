@@ -23,7 +23,7 @@ router.post(
 	[
 		validateJWT,
 		check('name', 'The pet name is necesary').not().isEmpty(),
-		check('birthDay', 'Thepet birtDay date is necesary').not().isEmpty(),
+		check('birthDay', 'The pet birthday date is necesary').not().isEmpty(),
 		validateFields,
 	],
 	createPet
