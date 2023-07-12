@@ -1,10 +1,11 @@
 const { response } = require('express');
 const GlucoseLevel = require('../models/glucose-level');
 
-const getGlucoseLevels = (req, res = response) => {
-	res.json({
+const getGlucoseLevels = async (req, res = response) => {
+	const glucoseLevels = await GlucoseLevel.find().populate('pet', 'name');
+	res.status(200).json({
 		ok: true,
-		msg: 'get glucose levels',
+		glucoseLevels,
 	});
 };
 

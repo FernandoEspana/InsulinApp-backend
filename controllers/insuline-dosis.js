@@ -1,10 +1,12 @@
 const { response } = require('express');
 const InsulineDosis = require('../models/insuline-dosis');
+const Pet = require('../models/pet');
 
-const getInsulineDosis = (req, res = response) => {
-	res.json({
+const getInsulineDosis = async (req, res = response) => {
+	const insulineDosis = await InsulineDosis.find().populate('pet', 'name');
+	res.status(200).json({
 		ok: true,
-		msg: 'get insuline Dosis',
+		insulineDosis,
 	});
 };
 //TODO: Create insuline DOSIS
@@ -14,6 +16,9 @@ const createInsulineDosis = async (req, res = response) => {
 	});
 
 	try {
+		const pet = await Pet.findById(insulineDosis.pet);
+		pet.insulineDosisIDs.push(insulineDosis);
+		await pet.save({ validateBeforeSave: false });
 		const insulineDosisDB = await insulineDosis.save();
 
 		res.status(200).json({

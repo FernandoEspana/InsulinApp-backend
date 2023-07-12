@@ -19,6 +19,9 @@ const UserSchema = Schema({
 		require: false,
 		default: 'USER_ROLE',
 	},
+	petsIDs: {
+		type: [{ type: Schema.Types.ObjectId, ref: 'Pet' }],
+	},
 });
 
 UserSchema.method('toJSON', function () {

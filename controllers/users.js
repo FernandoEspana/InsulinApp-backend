@@ -5,10 +5,20 @@ const { validationResult } = require('express-validator');
 const { generateJWT } = require('../helpers/jwt');
 
 const getUsers = async (req, res) => {
-	const users = await User.find({}, 'name email role');
-	res.json({
+	//Obtiene el valor el query params si es null o NaN retorna 0
+	const from = Number(req.query.from) || 0;
+	console.log(from);
+
+	const [users, total] = await Promise.all([
+		User.find({}, 'name email role').skip(from).populate('petsIDs'),
+		User.count(),
+	]);
+
+	//const [users, total] = await User.find({}, 'name email role');
+	res.status(200).json({
 		ok: true,
 		users,
+		total,
 	});
 };
 

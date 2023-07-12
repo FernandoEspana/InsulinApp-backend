@@ -17,6 +17,12 @@ const PetSchema = Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 	},
+	glucoseRecordsIDs: {
+		type: [{ type: Schema.Types.ObjectId, ref: 'GlucoseLevel' }],
+	},
+	insulineDosisIDs: {
+		type: [{ type: Schema.Types.ObjectId, ref: 'InsulineDosis' }],
+	},
 });
 
 PetSchema.method('toJSON', function () {

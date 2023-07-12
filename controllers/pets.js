@@ -1,14 +1,17 @@
 const { response } = require('express');
 const Pet = require('../models/pet');
+const User = require('../models/user');
 
-const getPets = (req, res = response) => {
+const getPets = async (req, res = response) => {
+	const pets = await Pet.find();
+	console.log(pets);
 	res.json({
 		ok: true,
-		msg: 'get pets',
+		pets,
 	});
 };
 
-//create PET 
+//create PET
 const createPet = async (req, res = response) => {
 	const uid = req.uid;
 
@@ -19,6 +22,9 @@ const createPet = async (req, res = response) => {
 
 	try {
 		const petDB = await pet.save();
+		const user = await User.findById(pet.user);
+		user.petsIDs.push(pet._id);
+		await user.save({ validateBeforeSave: false });
 
 		res.status(200).json({
 			ok: true,
